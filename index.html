@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Population Projections</title>
+    <!--<link rel="stylesheet" href="styles/styles.css"> -->
+
+    <!-- dependencies -->
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <!-- your scripts -->
+  </head>
+  <body>
+  <script>
+
+  var app = {};
+
+  app.init = function (data) {
+  var svg = d3.select('body').append('svg')
+    .attr({width:'1000', height:'1000'});
+
+  var circle = svg.selectAll('circle').data(data);
+
+  circle.enter()
+    .append('circle')
+    .attr('fill','black')
+    .attr('r', function (d) { return 10 })
+    .attr('cy', function () { return Math.random()*1000 })
+    .attr('cx', function () { return Math.random()*1000 });
+  }
+
+
+  d3.csv("popData.csv")
+    .row(function(d){ return {"Location": d.Location, "2013": +d[2013], "2050": +d[2050], "Increment": +d.Increment}; })
+    .get(function(error, rows) {
+      app.init(rows);
+    });
+
+
+  </script>
+    <div id="main">
+      <h1 style="color:purple;">chatter<span style="color:green;">box</span></h1>
+      <form>
+        <input type='text' class='sendText'></input>
+        <button class='send'>send</button>
+        <button class='createRoom'>create room</button>
+      </form>
+      <select class = "dropdown">
+      </select>
+      <div>
+        <div class="chatDisplay"></div>
+        <div class="friends">
+          <h2 class='friendsLabel'>My Friends</h2>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
