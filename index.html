@@ -15,24 +15,42 @@
   <script>
 
   var app = {};
+  var width = 1000;
+  var height = 800;
+
+  var colors = {
+    "Eastern Africa": "#009900",
+    "Middle Africa" : "#005C00",
+    "Northern Africa": "#66FF33",
+    "Southern Africa": "#009933",
+    "Western Africa": "#669900",
+    "Caribbean": "#FF66FF",
+    "Central America": "#CCFF33",
+    "South America": "#FFFF00",
+    "North America": "#FF0000",
+    "Asia": "#9933FF",
+    "Europe": "#3366FF",
+    "Middle East": "#00FFFF",
+    "Oceania": "#663300"
+  }
 
   app.init = function (data) {
   var svg = d3.select('body').append('svg')
-    .attr({width:'1000', height:'1000'});
+    .attr({width: width, height: height});
 
   var circle = svg.selectAll('circle').data(data);
 
   circle.enter()
     .append('circle')
-    .attr('fill','black')
-    .attr('r', function (d) { return 10 })
-    .attr('cy', function () { return Math.random()*1000 })
-    .attr('cx', function () { return Math.random()*1000 });
+    .attr('fill', function(d) { return colors[d.Region] })
+    .attr('r', function (d) { return 5 })
+    .attr('cy', function () { return Math.random() * width })
+    .attr('cx', function () { return Math.random()* height });
   }
 
 
   d3.csv("popData.csv")
-    .row(function(d){ return {"Location": d.Location, "2013": +d[2013], "2050": +d[2050], "Increment": +d.Increment}; })
+    .row(function(d){ return {"Location": d.Location, "2013": +d[2013], "2050": +d[2050], "Increment": +d.Increment, "Region": d.Region}; })
     .get(function(error, rows) {
       app.init(rows);
     });
